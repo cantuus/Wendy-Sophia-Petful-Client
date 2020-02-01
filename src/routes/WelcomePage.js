@@ -23,7 +23,7 @@ class WelcomePage extends Component {
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
         <p>Start the adoption process now to secure your place in the QUEUE!</p>
-        <Link to="/adoptions">
+        <Link to="/request">
           <button>Start the adoption process!</button>
         </Link>
       </div>

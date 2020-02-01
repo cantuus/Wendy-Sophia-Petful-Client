@@ -1,25 +1,43 @@
-import React, {Component} from 'react';
-
+import React, { Component } from "react";
+import "./Form.css";
 export default class Form extends Component {
-  state = {people: ['Ann','Bob','Clara','Dana','Eli']}  
+  // state = {
+  //   people: [],
+  //   person: ""
+  // };
 
   handleSubmit = e => {
     e.preventDefault();
 
-    const {name_field} = e.target
-    const {people} = this.state;
+    // const { people, person } = this.state;
+    // this.setState([...people, person]);
 
-    this.setState(...people, name_field)
+    console.log(this.state);
+  };
 
-  }
+  addPerson = person => {
+    this.setState({ people: [...this.state.people, person] });
+  };
 
   render() {
-    return ( 
-     <form className="adoption-form" onSubmit={this.handleSubmit}>
-      <label htmlFor="Form_name">Name of New Pet Parent</label> 
-      <input required type="text" aria-label="name input field" className="add-name-input" name="name_field" id="Form_name"/>
-      <button type="submit">Join waiting list</button>
-    </form>
-    )
+    const { people, person } = this.state;
+
+    return (
+      <form className="adoption-form" onSubmit={e => this.handleSubmit(e)}>
+        <label htmlFor="Form_name">Name of New Pet Parent</label>
+        <input
+          required
+          type="text"
+          aria-label="name input field"
+          className="add-name-input"
+          name="name"
+          id="Form_name"
+          onChange={e => this.addPerson(e.target.value)}
+        />
+        <button type="submit" onClick={e => this.handleSubmit(e)}>
+          Join waiting list
+        </button>
+      </form>
+    );
   }
 }
