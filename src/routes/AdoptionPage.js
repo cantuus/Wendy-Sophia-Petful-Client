@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./AdoptionPage.css";
 import { adoptionQueue, namesList } from "../Queue";
 import PetApiService from "../services/pet-api-services";
-import PeopleList from "../components/PeopleList";
+import PeopleList from "../components/peopleList";
 import CatAdoption from "../components/CatAdoption";
 import DogAdoption from "../components/DogAdoption";
 
@@ -23,7 +23,7 @@ class AdoptionPage extends Component {
   }
   static defaultProps = {
     history: {
-      goBack: () => {}
+      goBack: () => { }
     }
   };
 
@@ -51,10 +51,12 @@ class AdoptionPage extends Component {
 
   componentDidMount() {
     PetApiService.getCats()
-      .then(cat =>
+      .then(cat => {
+        console.log('this is', cat);
         this.setState({
           cat: cat
         })
+      }
       )
       .catch({
         error: "an error came up"
