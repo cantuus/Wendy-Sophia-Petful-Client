@@ -136,6 +136,29 @@ class AdoptionPage extends Component {
       });
   }
 
+  componentDidMount() {
+    PetApiService.getCats()
+      .then(response => {
+        this.setState({
+          cat: response
+        });
+        console.log("this is the", response);
+      })
+      .catch(error => {
+        console.error({ error });
+      });
+    PetApiService.getDogs()
+      .then(response => {
+        this.setState({
+          dog: response
+        });
+        console.log("this is the", response);
+      })
+      .catch(error => {
+        console.error({ error });
+      });
+  }
+
   render() {
     const { people, cat, dog } = this.state;
     return (
