@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import "./AdoptionPage.css";
 import { adoptionQueue, namesList } from "../Queue";
 import PetApiService from "../services/pet-api-services";
-import PeopleList from "../components/peopleList";
-import CatAdoption from "../components/cat";
-// import DogAdoption from "../components/dog"
+import PeopleList from "../components/PeopleList";
+import CatAdoption from "../components/CatAdoption";
+import DogAdoption from "../components/DogAdoption";
 
 import "./AdoptionPage.css";
 
@@ -12,12 +12,15 @@ class AdoptionPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      people: ["wendy", "sophia"],
+      people: ["Wendy", "Sophia", "Ruckus"],
       cat: {},
-      dog: {}
+      dog: {},
+      current: {
+        person: "",
+        touched: false
+      }
     };
   }
-
   static defaultProps = {
     history: {
       goBack: () => {}
@@ -67,37 +70,56 @@ class AdoptionPage extends Component {
       });
   }
 
-  // showAdoptButton(index) {
-  //   if(this.state.turnToAdopt && index === 0){
-  //     return(
-  //       <button type='button' disabled={!this.state.turnToAdopt} onClick={this}
-  //     )
-  //   }
-  // }
+  enableAdoptButton(pet) {
+    return (
+      <>
+        <button type="button" disabled={!this.state.current.touched}>
+          Adopt Me!
+        </button>
+      </>
+    );
+  }
+
   renderWaitlist() {
     return (
       <div className="AdoptionPage__list-container">
         <h2>Waitlist</h2>
         <ul className="people-list">
-          {this.state.people.map(person => (
-            <PeopleList person={person} />
+          {this.state.people.map((person, idx) => (
+            <PeopleList key={idx} person={person} />
           ))}
         </ul>
       </div>
     );
   }
 
+  renderCat() {
+    return (
+      <div className="AdoptionPage__cat">
+        <h2>Meet {this.state.cat.name}</h2>
+        <CatAdoption cat={this.state.cat} />
+        {this.enableAdoptButton()}
+      </div>
+    );
+  }
+
+  renderDog() {
+    return (
+      <div className="AdoptionPage__dog">
+        <h2>Meet {this.state.dog.name}</h2>
+        <DogAdoption dog={this.state.dog} />
+        {this.enableAdoptButton()}
+      </div>
+    );
+  }
+
   render() {
-    const { people } = this.state;
+    const { people, cat, dog } = this.state;
     return (
       <div className="AdoptionPage__animals">
         {people.length && this.renderWaitlist()}
-        <h2>Next available cat</h2>
-        <CatAdoption cat={this.state.cat} />
-        <h2>Next available dog</h2>
-        {/* <DogAdoption
-          dog={this.state.dogs}
-        /> */}
+        {cat && this.renderCat()}
+        {dog && this.renderDog()}
       </div>
     );
   }

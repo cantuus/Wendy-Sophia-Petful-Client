@@ -1,3 +1,27 @@
+.AdoptionPage__list-container {
+  align-items: center;
+}
+
 .AdoptionPage__animals {
   display: flex;
+}
+
+.AdoptionPage__cat {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.AdoptionPage__dog {
+  padding: 10px;
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  width: 400px;
 }

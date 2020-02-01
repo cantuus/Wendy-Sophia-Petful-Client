@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import "./Form.css";
 export default class Form extends Component {
-  // state = {
-  //   people: [],
-  //   person: ""
-  // };
+  state = {
+    people: ["Wendy", "Sophia"],
+    person: ""
+  };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -20,7 +20,7 @@ export default class Form extends Component {
   };
 
   render() {
-    const { people, person } = this.state;
+    // const { people, person } = this.state;
 
     return (
       <form className="adoption-form" onSubmit={e => this.handleSubmit(e)}>

@@ -1,8 +1,10 @@
 .people-list {
   display: flex;
   flex-direction: column;
+  width: 400px;
 }
 
 .list {
   list-style-type: none;
+  padding: 10px;
 }
