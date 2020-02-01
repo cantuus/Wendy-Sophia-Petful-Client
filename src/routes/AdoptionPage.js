@@ -4,7 +4,7 @@ import { adoptionQueue, namesList } from '../Queue'
 import PetApiService from "../services/pet-api-services";
 import PeopleList from "../components/peopleList"
 import CatAdoption from "../components/cat"
-// import DogAdoption from "../components/dog"
+import DogAdoption from "../components/dog"
 
 class AdoptionPage extends Component {
   constructor(props) {
@@ -23,54 +23,28 @@ class AdoptionPage extends Component {
     }
   };
 
-  handleName = (e) => {
-    this.setState({
-      firstName: e.target.value
-    })
-  }
-
-  submitName = (e) => {
-    e.preventDefault();
-    let ownerName = this.state.name;
-    adoptionQueue.enqueue(ownerName);
-    this.setState({
-      registered: true,
-      numInLine: adoptionQueue.length
-    })
-  }
-
-  showOwnershipMessage = () => {
-    if (this.state.currentNewOwner && !this.state.turnToAdopt) {
-      return `Congrats to ${this.state.currentNewOwner} and their new pet ${this.state.currentPet}`;
-    }
-  }
-
   componentDidMount() {
-    PetApiService.getCats().then(
-      cat => this.setState({
-        cat: cat
+    PetApiService.getCats()
+      .then(response => {
+        this.setState({
+          cat: response
+        })
+        console.log('this is the', response);
       })
-    )
-      .catch({
-        error: 'an error came up'
-      });
-    PetApiService.getDogs().then(
-      dog => this.setState({
-        dog: dog
+      .catch(error => {
+        console.error({ error })
       })
-    )
-      .catch({
-        error: 'an error came up'
-      });
+    PetApiService.getDogs()
+      .then(response => {
+        this.setState({
+          dog: response
+        })
+        console.log('this is the', response);
+      })
+      .catch(error => {
+        console.error({ error })
+      })
   }
-
-  // showAdoptButton(index) {
-  //   if(this.state.turnToAdopt && index === 0){
-  //     return(
-  //       <button type='button' disabled={!this.state.turnToAdopt} onClick={this}
-  //     )
-  //   }
-  // }
 
   render() {
     return (
@@ -83,9 +57,9 @@ class AdoptionPage extends Component {
           cat={this.state.cat}
         />
         <h2>Next available dog</h2>
-        {/* <DogAdoption
-          dog={this.state.dogs}
-        /> */}
+        <DogAdoption
+          dog={this.state.dog}
+        />
       </div>
     );
   }
