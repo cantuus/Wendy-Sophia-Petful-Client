@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./PeopleList.css";
+
 class PeopleList extends Component {
   render() {
     const { person } = this.props;
