@@ -1,6 +1,11 @@
 import config from "../config";
 
 const PetApiService = {
+  reloadCats() {
+    return fetch(`${config.API_ENDPOINT}/cats/reload`).then(res =>
+      !res.ok ? res.json().then(e => Promise.reject(e)) : res.json()
+    );
+  },
   getCats() {
     return fetch(`${config.API_ENDPOINT}/cats`).then(res =>
       !res.ok ? res.json().then(e => Promise.reject(e)) : res.json()

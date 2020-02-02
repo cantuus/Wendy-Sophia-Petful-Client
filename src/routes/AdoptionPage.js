@@ -7,6 +7,7 @@ import CatAdoption from "../components/CatAdoption";
 import DogAdoption from "../components/DogAdoption";
 
 import "./AdoptionPage.css";
+import { withRouter } from "react-router-dom";
 
 class AdoptionPage extends Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class AdoptionPage extends Component {
       people: ["Wendy", "Sophia", "Ruckus"],
       cat: {},
       dog: {},
+      yourTurn: false,
       current: {
         person: "",
         touched: false
@@ -49,33 +51,52 @@ class AdoptionPage extends Component {
     }
   };
 
-  componentDidMount() {
+  updateCat = () => {
     PetApiService.getCats()
+      .then(response => {
+        console.log('this is', response.cat);
+        this.setState({
+          cat: response.cat,
+          yourTurn: response.yourTurn
+        })
+      })
       .then(cat => {
-        console.log('this is', cat);
-        this.setState({
-          cat: cat
-        })
-      }
-      )
-      .catch({
-        error: "an error came up"
-      });
-    PetApiService.getDogs()
-      .then(dog =>
-        this.setState({
-          dog: dog
-        })
-      )
+          PetApiService.deleteCat().then(() => {
+            if (!this.state.yourTurn) {
+              setTimeout(() => {
+                this.updateCat();
+              }, 3000);
+            }
+          });
+      })
       .catch({
         error: "an error came up"
       });
   }
 
+  componentDidMount() {
+    PetApiService.reloadCats().then(() => {
+      this.updateCat();
+    });
+    // PetApiService.getDogs()
+    //   .then(dog => {
+    //     this.setState({
+    //       dog: dog
+    //     })
+    //     PetApiService.deleteDog()
+    //       .then(dog => {
+    //         dog
+    //       })
+    //   })
+    //   .catch({
+    //     error: "an error came up"
+    //   });
+  }
+
   enableAdoptButton(pet) {
     return (
       <>
-        <button type="button" disabled={!this.state.current.touched}>
+        <button type="button" disabled={!this.state.current.touched && !this.state.yourTurn}>
           Adopt Me!
         </button>
       </>
@@ -113,52 +134,6 @@ class AdoptionPage extends Component {
         {this.enableAdoptButton()}
       </div>
     );
-  }
-
-  componentDidMount() {
-    PetApiService.getCats()
-      .then(response => {
-        this.setState({
-          cat: response
-        });
-        console.log("this is the", response);
-      })
-      .catch(error => {
-        console.error({ error });
-      });
-    PetApiService.getDogs()
-      .then(response => {
-        this.setState({
-          dog: response
-        });
-        console.log("this is the", response);
-      })
-      .catch(error => {
-        console.error({ error });
-      });
-  }
-
-  componentDidMount() {
-    PetApiService.getCats()
-      .then(response => {
-        this.setState({
-          cat: response
-        });
-        console.log("this is the", response);
-      })
-      .catch(error => {
-        console.error({ error });
-      });
-    PetApiService.getDogs()
-      .then(response => {
-        this.setState({
-          dog: response
-        });
-        console.log("this is the", response);
-      })
-      .catch(error => {
-        console.error({ error });
-      });
   }
 
   render() {
