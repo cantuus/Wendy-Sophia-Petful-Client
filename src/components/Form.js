@@ -1,43 +1,68 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import PetContext from "../context/PetContext";
 import "./Form.css";
 export default class Form extends Component {
-  state = {
-    people: ["Wendy", "Sophia"],
-    person: ""
+  static defaultProps = {
+    onRedirect: () => {}
   };
+  static contextType = PetContext;
 
-  handleSubmit = e => {
+  handleSubmitCat = e => {
     e.preventDefault();
-
-    // const { people, person } = this.state;
-    // this.setState([...people, person]);
-
-    console.log(this.state);
+    const { setCatWaitlist } = this.context;
+    const { catName } = e.target;
+    setCatWaitlist(catName.value);
+    catName.value = "";
   };
 
-  addPerson = person => {
-    this.setState({ people: [...this.state.people, person] });
+  handleSubmitDog = e => {
+    e.preventDefault();
+    const { setDogWaitlist } = this.context;
+    const { dogName } = e.target;
+    setDogWaitlist(dogName.value);
+    dogName.value = "";
   };
 
   render() {
-    // const { people, person } = this.state;
-
     return (
-      <form className="adoption-form" onSubmit={e => this.handleSubmit(e)}>
-        <label htmlFor="Form_name">Name of New Pet Parent</label>
-        <input
-          required
-          type="text"
-          aria-label="name input field"
-          className="add-name-input"
-          name="name"
-          id="Form_name"
-          onChange={e => this.addPerson(e.target.value)}
-        />
-        <button type="submit" onClick={e => this.handleSubmit(e)}>
-          Join waiting list
-        </button>
-      </form>
+      <>
+        <form className="adoption-form" onSubmit={this.handleSubmitCat}>
+          <label htmlFor="Form_name">
+            Add Name to Cat Adoption Waiting List
+          </label>
+          <input
+            required
+            type="text"
+            aria-label="name input field"
+            className="add-name-input"
+            name="catName"
+            id="Form_name"
+          />
+          <button type="submit">Join waiting list</button>
+        </form>
+        <Link to="/cat-adoptions">
+          <button>See available cats!</button>
+        </Link>
+
+        <form className="adoption-form" onSubmit={this.handleSubmitDog}>
+          <label htmlFor="Form_name">
+            Add Name to Dog Adoption Waiting List
+          </label>
+          <input
+            required
+            type="text"
+            aria-label="name input field"
+            className="add-name-input"
+            name="dogName"
+            id="Form_name"
+          />
+          <button type="submit">Join waiting list</button>
+        </form>
+        <Link to="/dog-adoptions">
+          <button>See available cats!</button>
+        </Link>
+      </>
     );
   }
 }

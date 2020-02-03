@@ -1,13 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
+import { PetProvider } from "./context/PetContext";
 import "./index.css";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <PetProvider>
+      <App />
+    </PetProvider>
   </BrowserRouter>,
   document.getElementById("root")
 );

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./AdoptionPage.css";
 import { adoptionQueue, namesList } from "../Queue";
 import PetApiService from "../services/pet-api-services";
+import PetContext from "../context/PetContext";
 import PeopleList from "../components/peopleList";
 import CatAdoption from "../components/CatAdoption";
 import DogAdoption from "../components/DogAdoption";
@@ -10,24 +11,13 @@ import "./AdoptionPage.css";
 import { withRouter } from "react-router-dom";
 
 class AdoptionPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      people: ["Wendy", "Sophia", "Ruckus"],
-      cat: {},
-      dog: {},
-      yourTurn: false,
-      current: {
-        person: "",
-        touched: false
-      }
-    };
-  }
   static defaultProps = {
     history: {
-      goBack: () => { }
+      goBack: () => {}
     }
   };
+
+  static contextType = PetContext;
 
   handleName = e => {
     this.setState({
@@ -51,98 +41,103 @@ class AdoptionPage extends Component {
     }
   };
 
-  updateCat = () => {
-    PetApiService.getCats()
-      .then(response => {
-        console.log('this is', response.cat);
-        this.setState({
-          cat: response.cat,
-          yourTurn: response.yourTurn
-        })
-      })
-      .then(cat => {
-          PetApiService.deleteCat().then(() => {
-            if (!this.state.yourTurn) {
-              setTimeout(() => {
-                this.updateCat();
-              }, 3000);
-            }
-          });
-      })
-      .catch({
-        error: "an error came up"
+  updateDog = () => {
+    PetApiService.getDogs().then(response => {
+      console.log("this is", response.cat);
+      this.setState({
+        dog: response.dog
+        // yourTurn: response.yourTurn
       });
-  }
+    });
+    // .then(dog => {
+    //   PetApiService.deleteDog().then(() => {
+    //     // if (!this.state.yourTurn) {
+    //     setTimeout(() => {
+    //       this.updateDog();
+    //     }, 3000);
+    //     // }
+    //   });
+    // })
+    // .catch({
+    //   error: "an error came up"
+    // });
+  };
 
   componentDidMount() {
-    PetApiService.reloadCats().then(() => {
-      this.updateCat();
-    });
-    // PetApiService.getDogs()
-    //   .then(dog => {
-    //     this.setState({
-    //       dog: dog
-    //     })
-    //     PetApiService.deleteDog()
-    //       .then(dog => {
-    //         dog
-    //       })
-    //   })
-    //   .catch({
-    //     error: "an error came up"
-    //   });
+    this.context.clearError();
+    PetApiService.getDogs()
+      .then(this.context.setDog)
+      .then(() => this.updateDog())
+      .catch(this.context.setError);
+    console.log(this.context);
   }
+
+  // deleteCat = () => {
+  //   PetApiService.deleteCat();
+  // };
 
   enableAdoptButton(pet) {
     return (
       <>
-        <button type="button" disabled={!this.state.current.touched && !this.state.yourTurn}>
-          Adopt Me!
-        </button>
+        {/* disabled={!this.state.current.touched && !this.state.yourTurn} */}
+        <button type="button">Adopt Me!</button>
       </>
     );
   }
 
   renderWaitlist() {
+    const { waitlist } = this.context;
     return (
       <div className="AdoptionPage__list-container">
         <h2>Waitlist</h2>
         <ul className="people-list">
-          {this.state.people.map((person, idx) => (
+          {waitlist.map((person, idx) => (
             <PeopleList key={idx} person={person} />
           ))}
         </ul>
       </div>
     );
   }
+  removePerson(idx) {
+    const newWaitlist = this.context.Waitlist.filter(index => index !== idx);
 
+    this.setState({
+      waitlist: [...newWaitlist]
+    });
+  }
   renderCat() {
+    const { cat } = this.context;
     return (
       <div className="AdoptionPage__cat">
-        <h2>Meet {this.state.cat.name}</h2>
-        <CatAdoption cat={this.state.cat} />
+        <h2>Meet {cat.name}</h2>
+        <CatAdoption cat={cat} />
         {this.enableAdoptButton()}
       </div>
     );
   }
 
   renderDog() {
+    const { dog } = this.context;
+
     return (
       <div className="AdoptionPage__dog">
-        <h2>Meet {this.state.dog.name}</h2>
-        <DogAdoption dog={this.state.dog} />
-        {this.enableAdoptButton()}
+        <h2>Meet {dog.name}</h2>
+        <DogAdoption dog={dog} />
       </div>
     );
   }
 
   render() {
-    const { people, cat, dog } = this.state;
+    const { waitlist, cat, dog } = this.context;
+
     return (
-      <div className="AdoptionPage__animals">
-        {people.length && this.renderWaitlist()}
-        {cat && this.renderCat()}
-        {dog && this.renderDog()}
+      <div className="AdoptionPage__container">
+        <h3>Next up to adopt: {waitlist[0]}</h3>
+        <div className="AdoptionPage__animals">
+          {waitlist.length && this.renderWaitlist()}
+          {cat && this.renderCat()}
+          {dog && this.renderDog()}
+        </div>
       </div>
     );
   }
