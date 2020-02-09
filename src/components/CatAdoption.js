@@ -17,7 +17,7 @@ class CatAdoption extends Component {
       })
       .then(cat => {
         PetApiService.deleteCat().then(() => {
-          if (catWaitlist.length > 0) {
+          if (catWaitlist.length > 1) {
             setTimeout(() => {
               this.updateCat();
             }, 2000);

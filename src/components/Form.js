@@ -33,7 +33,6 @@ export default class Form extends Component {
   };
 
   render() {
-    const { submitted } = this.state;
     return (
       <div className="form-container">
         <form className="adoption-form" onSubmit={this.handleSubmitCat}>

@@ -6,12 +6,11 @@ import CatAdoption from "../components/CatAdoption";
 import CatList from "../components/CatList";
 
 import "./CatAdoptionPage.css";
-import PetApiService from "../services/pet-api-services";
 
 class CatAdoptionPage extends Component {
   static defaultProps = {
     history: {
-      goBack: () => {}
+      push: () => {}
     }
   };
 
@@ -20,31 +19,35 @@ class CatAdoptionPage extends Component {
   state = {
     adoptionComplete: false
   };
-  // handleName = e => {
-  //   this.setState({
-  //     firstName: e.target.value
-  //   });
-  // };
-
-  // submitName = e => {
-  //   e.preventDefault();
-  //   let ownerName = this.state.name;
-  //   adoptionQueue.enqueue(ownerName);
-  //   this.setState({
-  //     registered: true,
-  //     numInLine: adoptionQueue.length
-  //   });
-  // };
 
   handleAdoption() {
     this.setState({ adoptionComplete: true });
+    this.props.history.push("/summary");
+  }
+  renderWaitlistMessage() {
+    const { catAdopter, catWaitlist } = this.context;
+    return (
+      <h3>
+        {!!catWaitlist.length ? (
+          <div className="next-person">
+            {catWaitlist[0]}, meet your new cat!
+          </div>
+        ) : (
+          <div>
+            This cat is waiting for a new home. Join the waitlist to adopt this
+            next cat!
+          </div>
+        )}
 
-    console.log(this.state.adoptionComplete);
+        {catAdopter === catWaitlist[0] ? (
+          <p>Click the Adopt Me button below to complete the adoption</p>
+        ) : (
+          ""
+        )}
+      </h3>
+    );
   }
 
-  renderMessage() {
-    return <div>Congrats to $ and their new pet</div>;
-  }
   enableAdoptButton() {
     const { catAdopter, catWaitlist } = this.context;
     return (
@@ -86,34 +89,21 @@ class CatAdoptionPage extends Component {
   }
 
   render() {
-    const { catAdopter, catWaitlist, cat } = this.context;
+    const { cat } = this.context;
 
     return (
       <div className="AdoptionPage__container">
-        {catWaitlist.length ? (
-          <h3>
-            <div className="next-person">{catWaitlist[0]}</div>
-            Meet your new cat!
-            {catAdopter === catWaitlist[0] ? (
-              <p>Click the Adopt Me button below</p>
-            ) : (
-              ""
-            )}
-          </h3>
-        ) : (
-          <h3>This cat is waiting for a home...Join the waiting list.</h3>
-        )}
+        {/* When user is the first in the Queue, a message will render to instruct the user to click the button to adopt the next cat. */}
+        {this.renderWaitlistMessage()}
+
         <div className="AdoptionPage__animals">{cat && this.renderCat()}</div>
+
         <h2>Waitlist</h2>
-        <div className="CatAdoption__waitlist">
-          {catWaitlist.length ? (
-            this.renderWaitlist()
-          ) : (
-            <Link to="/request">
-              <button>Join the waitlist</button>
-            </Link>
-          )}
-        </div>
+        <div className="CatAdoption__waitlist">{this.renderWaitlist()}</div>
+
+        <Link to="/request">
+          <button>Join the waitlist</button>
+        </Link>
         <h3>More Available Cats</h3>
         <CatList />
       </div>
