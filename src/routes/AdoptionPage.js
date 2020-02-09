@@ -43,7 +43,6 @@ class AdoptionPage extends Component {
 
   updateDog = () => {
     PetApiService.getDogs().then(response => {
-      console.log("this is", response.cat);
       this.setState({
         dog: response.dog
         // yourTurn: response.yourTurn
@@ -132,9 +131,9 @@ class AdoptionPage extends Component {
 
     return (
       <div className="AdoptionPage__container">
-        <h3>Next up to adopt: {waitlist[0]}</h3>
+        <h3>Next up to adopt:</h3>
         <div className="AdoptionPage__animals">
-          {waitlist.length && this.renderWaitlist()}
+          {/* {waitlist.length && this.renderWaitlist()} */}
           {cat && this.renderCat()}
           {dog && this.renderDog()}
         </div>

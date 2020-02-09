@@ -4,6 +4,7 @@ const PetContext = React.createContext({
   catWaitlist: [],
   dogWaitlist: [],
   cat: {},
+  nextCat: {},
   dog: {},
   addPerson: () => {},
   setCat: () => {},
@@ -18,9 +19,10 @@ export default PetContext;
 
 export class PetProvider extends Component {
   state = {
-    catWaitlist: ["Wendy", "Sophia", "Rafe", "Anna"],
-    dogWaitlist: ["Hannah", "Joanna", "Joe", "Rich"],
+    catWaitlist: ["Wendy", "Sophia", "Maggie", "Krystle", "Christina"],
+    dogWaitlist: ["Andrea", "Joe", "Rich", "Tauhida"],
     cat: {},
+    nextCat: {},
     dog: {},
     yourTurn: false,
     current: {
@@ -45,6 +47,12 @@ export class PetProvider extends Component {
     this.setState({ cat });
   };
 
+  setAllCats = resData => {
+    this.setState({
+      nextCat: resData
+    });
+  };
+
   setDog = dog => {
     this.setState({ dog });
   };
@@ -59,14 +67,18 @@ export class PetProvider extends Component {
 
   render() {
     const value = {
-      waitlist: this.state.waitlist,
+      catWaitlist: this.state.catWaitlist,
+      dogWaitlist: this.state.dogWaitlist,
       cat: this.state.cat,
+      nextCat: this.state.nextCat,
       dog: this.state.dog,
       currentPerson: this.state.currentPerson,
       addPerson: this.addPerson,
       setCat: this.setCat,
+      setAllCats: this.setAllCats,
       setDog: this.setDog,
-      setWaitlist: this.setWaitlist,
+      setCatWaitlist: this.setCatWaitlist,
+      setDogWaitlist: this.setDogWaitlist,
       setError: this.setError,
       clearError: this.clearError
     };

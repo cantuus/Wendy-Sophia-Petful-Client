@@ -20,8 +20,13 @@ const PetApiService = {
       }
     });
   },
+  displayCats() {
+    return fetch(`${config.API_ENDPOINT}/cats/allcats`).then(res =>
+      !res.ok ? res.json().then(e => Promise.reject(e)) : res.json()
+    );
+  },
   reloadCats() {
-    return fetch(`${config.API_ENDPOINT}/cats/reload`).then(res =>
+    return fetch(`${config.API_ENDPOINT}/cats/morecats`).then(res =>
       !res.ok ? res.json().then(e => Promise.reject(e)) : res.json()
     );
   },

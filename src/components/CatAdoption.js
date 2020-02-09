@@ -1,23 +1,25 @@
 import React, { Component } from "react";
 import PetApiService from "../services/pet-api-services";
 import PetContext from "../context/PetContext";
-import Queue from "../Queue";
 
 class CatAdoption extends Component {
   static contextType = PetContext;
 
   updateCat = () => {
+    const { catWaitlist } = this.context;
+
+    catWaitlist.shift();
+
     PetApiService.getCats()
       .then(response => {
-        console.log(response.cat);
         this.context.setCat(response.cat);
       })
       .then(cat => {
         PetApiService.deleteCat().then(() => {
-          if (!this.context.yourTurn) {
+          if (catWaitlist.length) {
             setTimeout(() => {
               this.updateCat();
-            }, 7000);
+            }, 2000);
           }
         });
       })

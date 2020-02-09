@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Dog from "../images/dog.jpg";
 import Cat from "../images/cat.jpg";
+import "./WelcomePage.css";
 
 class WelcomePage extends Component {
   render() {
@@ -11,8 +12,10 @@ class WelcomePage extends Component {
           <h1>Welcome to Petful!</h1>
           <h2>Where every pet finds a forever home</h2>
         </header>
-        <img src={Dog} alt="dog" />
-        <img src={Cat} alt="cat" />
+
+        <img src={Dog} alt="dog" className="dog-pic" />
+        <img src={Cat} alt="cat" className="cat-pic" />
+
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad

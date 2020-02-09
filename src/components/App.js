@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import AdoptionPage from "../routes/AdoptionPage";
+import CatAdoptionPage from "../routes/CatAdoptionPage";
 import WelcomePage from "../routes/WelcomePage";
 import RequestFormPage from "../routes/RequestFormPage";
 
@@ -13,7 +13,7 @@ class App extends Component {
         <Switch>
           <Route exact path="/" component={WelcomePage} />
           <Route path={"/request"} component={RequestFormPage} />
-          <Route path={"/cat-adoptions"} component={AdoptionPage} />
+          <Route path={"/cat-adoptions"} component={CatAdoptionPage} />
         </Switch>
       </div>
     );

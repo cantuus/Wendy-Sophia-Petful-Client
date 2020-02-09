@@ -15,9 +15,9 @@ class PeopleList extends Component {
   //   error: "an error came up"
   // });
 
-
   render() {
     const { person } = this.props;
+
     return (
       <>
         <li className="list">{person}</li>

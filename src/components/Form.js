@@ -4,15 +4,22 @@ import PetContext from "../context/PetContext";
 import "./Form.css";
 export default class Form extends Component {
   static defaultProps = {
-    onRedirect: () => {}
+    history: {
+      push: () => {}
+    }
   };
   static contextType = PetContext;
+
+  state = {
+    submitted: false
+  };
 
   handleSubmitCat = e => {
     e.preventDefault();
     const { setCatWaitlist } = this.context;
     const { catName } = e.target;
     setCatWaitlist(catName.value);
+    this.setState({ submitted: true });
     catName.value = "";
   };
 
@@ -21,18 +28,17 @@ export default class Form extends Component {
     const { setDogWaitlist } = this.context;
     const { dogName } = e.target;
     setDogWaitlist(dogName.value);
+    this.setState({ submitted: true });
     dogName.value = "";
   };
 
   render() {
+    const { submitted } = this.state;
     return (
-      <>
+      <div className="form-container">
         <form className="adoption-form" onSubmit={this.handleSubmitCat}>
-          <label htmlFor="Form_name">
-            Add Name to Cat Adoption Waiting List
-          </label>
+          <label htmlFor="Form_name">Adopt-a-Cat</label>
           <input
-            required
             type="text"
             aria-label="name input field"
             className="add-name-input"
@@ -40,17 +46,15 @@ export default class Form extends Component {
             id="Form_name"
           />
           <button type="submit">Join waiting list</button>
+
+          <Link to="/cat-adoptions">
+            <button>See available cats!</button>
+          </Link>
         </form>
-        <Link to="/cat-adoptions">
-          <button>See available cats!</button>
-        </Link>
 
         <form className="adoption-form" onSubmit={this.handleSubmitDog}>
-          <label htmlFor="Form_name">
-            Add Name to Dog Adoption Waiting List
-          </label>
+          <label htmlFor="Form_name">Adopt-a-Dog</label>
           <input
-            required
             type="text"
             aria-label="name input field"
             className="add-name-input"
@@ -59,10 +63,7 @@ export default class Form extends Component {
           />
           <button type="submit">Join waiting list</button>
         </form>
-        <Link to="/dog-adoptions">
-          <button>See available cats!</button>
-        </Link>
-      </>
+      </div>
     );
   }
 }
