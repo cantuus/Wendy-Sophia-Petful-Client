@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import "./AdoptionPage.css";
-import { adoptionQueue, namesList } from "../Queue";
-import PetApiService from "../services/pet-api-services";
+import { Link } from "react-router-dom";
 import PetContext from "../context/PetContext";
 import PeopleList from "../components/peopleList";
 import CatAdoption from "../components/CatAdoption";
 import CatList from "../components/CatList";
-import DogAdoption from "../components/DogAdoption";
+
 import "./CatAdoptionPage.css";
-import { withRouter } from "react-router-dom";
+import PetApiService from "../services/pet-api-services";
 
 class CatAdoptionPage extends Component {
   static defaultProps = {
@@ -19,6 +17,9 @@ class CatAdoptionPage extends Component {
 
   static contextType = PetContext;
 
+  state = {
+    adoptionComplete: false
+  };
   // handleName = e => {
   //   this.setState({
   //     firstName: e.target.value
@@ -35,32 +36,35 @@ class CatAdoptionPage extends Component {
   //   });
   // };
 
-  // showOwnershipMessage = () => {
-  //   if (this.state.currentNewOwner && !this.state.turnToAdopt) {
-  //     return `Congrats to ${this.state.currentNewOwner} and their new pet ${this.state.currentPet}`;
-  //   }
-  // };
+  handleAdoption() {
+    this.setState({ adoptionComplete: true });
 
-  enableAdoptButton(pet) {
+    console.log(this.state.adoptionComplete);
+  }
+
+  renderMessage() {
+    return <div>Congrats to $ and their new pet</div>;
+  }
+  enableAdoptButton() {
+    const { catAdopter, catWaitlist } = this.context;
     return (
       <>
-        {/* disabled={!this.state.current.touched && !this.state.yourTurn} */}
-        <button type="button">Adopt Me!</button>
+        {catAdopter === catWaitlist[0] ? (
+          <button type="button" onClick={() => this.handleAdoption()}>
+            Adopt Me!
+          </button>
+        ) : (
+          ""
+        )}
       </>
     );
   }
 
   renderWaitlist = () => {
     const { catWaitlist } = this.context;
-    // console.log(catWaitlist);
-    // catWaitlist.shift();
-    // console.log(catWaitlist);
-    // setTimeout(() => {
-    //   this.renderWaitlist();
-    // }, 2000);
+
     return (
       <div className="AdoptionPage__list-container">
-        <h2>Waitlist</h2>
         <ul className="people-list">
           {catWaitlist.map((person, idx) => (
             <PeopleList key={idx} person={person} />
@@ -69,13 +73,7 @@ class CatAdoptionPage extends Component {
       </div>
     );
   };
-  // removePerson(idx) {
-  //   const newWaitlist = this.context.Waitlist.filter(index => index !== idx);
 
-  //   this.setState({
-  //     waitlist: [...newWaitlist]
-  //   });
-  // }
   renderCat() {
     const { cat } = this.context;
     return (
@@ -88,22 +86,35 @@ class CatAdoptionPage extends Component {
   }
 
   render() {
-    const { catWaitlist, cat, nextCats } = this.context;
+    const { catAdopter, catWaitlist, cat } = this.context;
 
     return (
       <div className="AdoptionPage__container">
         {catWaitlist.length ? (
           <h3>
             <div className="next-person">{catWaitlist[0]}</div>
-            You're next in line!
+            Meet your new cat!
+            {catAdopter === catWaitlist[0] ? (
+              <p>Click the Adopt Me button below</p>
+            ) : (
+              ""
+            )}
           </h3>
         ) : (
           <h3>This cat is waiting for a home...Join the waiting list.</h3>
         )}
-        <div className="AdoptionPage__animals">
-          {catWaitlist.length && this.renderWaitlist()}
-          {cat && this.renderCat()}
+        <div className="AdoptionPage__animals">{cat && this.renderCat()}</div>
+        <h2>Waitlist</h2>
+        <div className="CatAdoption__waitlist">
+          {catWaitlist.length ? (
+            this.renderWaitlist()
+          ) : (
+            <Link to="/request">
+              <button>Join the waitlist</button>
+            </Link>
+          )}
         </div>
+        <h3>More Available Cats</h3>
         <CatList />
       </div>
     );

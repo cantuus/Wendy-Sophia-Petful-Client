@@ -2,3 +2,29 @@
   font-size: 30px;
   text-decoration: underline;
 }
+
+img {
+  width: 400px;
+  height: 300px;
+}
+
+li {
+  list-style: none;
+}
+.cat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.people-list {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: lightgray;
+}
+.AdoptionPage__cat {
+  margin-left: auto;
+  margin-right: auto;
+}

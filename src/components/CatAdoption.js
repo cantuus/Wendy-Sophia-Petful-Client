@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PetApiService from "../services/pet-api-services";
 import PetContext from "../context/PetContext";
 
@@ -16,7 +17,7 @@ class CatAdoption extends Component {
       })
       .then(cat => {
         PetApiService.deleteCat().then(() => {
-          if (catWaitlist.length) {
+          if (catWaitlist.length > 0) {
             setTimeout(() => {
               this.updateCat();
             }, 2000);
@@ -34,29 +35,14 @@ class CatAdoption extends Component {
     });
   }
 
-  enableAdoptButton(pet) {
-    return (
-      <>
-        <button
-          type="button"
-          disabled={!this.state.current.touched && !this.state.yourTurn}
-        >
-          Adopt Me!
-        </button>
-      </>
-    );
-  }
-
   render() {
     const { cat } = this.props;
 
     return (
       <section className="cat-item">
-        <img
-          className="cat-picture"
-          src={cat.imageUrl}
-          alt={`picture of ${cat.name}`}
-        />
+        <Link to="/request">
+          <img className="cat-picture" src={cat.imageUrl} alt={cat.name} />
+        </Link>
         <ul>
           <li>Description: {cat.imageDescription}</li>
           <li>Sex: {cat.sex}</li>

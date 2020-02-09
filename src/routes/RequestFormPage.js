@@ -75,10 +75,6 @@ class RequestFormPage extends Component {
           <div className="pad small-3"></div>
           <div className="pad small-4"></div>
         </div>
-
-        <Link to="/dog-adoptions">
-          <button>See available dogs!</button>
-        </Link>
       </>
     );
   }

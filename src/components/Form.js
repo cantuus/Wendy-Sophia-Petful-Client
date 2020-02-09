@@ -11,15 +11,15 @@ export default class Form extends Component {
   static contextType = PetContext;
 
   state = {
-    submitted: false
+    catAdopter: ""
   };
 
   handleSubmitCat = e => {
     e.preventDefault();
-    const { setCatWaitlist } = this.context;
+    const { setCatWaitlist, setCatPerson } = this.context;
     const { catName } = e.target;
     setCatWaitlist(catName.value);
-    this.setState({ submitted: true });
+    setCatPerson(catName.value);
     catName.value = "";
   };
 
@@ -28,7 +28,7 @@ export default class Form extends Component {
     const { setDogWaitlist } = this.context;
     const { dogName } = e.target;
     setDogWaitlist(dogName.value);
-    this.setState({ submitted: true });
+
     dogName.value = "";
   };
 
@@ -44,6 +44,7 @@ export default class Form extends Component {
             className="add-name-input"
             name="catName"
             id="Form_name"
+            onChange={e => this.setState({ catAdopter: e.target.value })}
           />
           <button type="submit">Join waiting list</button>
 
@@ -62,6 +63,9 @@ export default class Form extends Component {
             id="Form_name"
           />
           <button type="submit">Join waiting list</button>
+          <Link to="/dog-adoptions">
+            <button>See available dogs!</button>
+          </Link>
         </form>
       </div>
     );
