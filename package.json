@@ -16,9 +16,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "now --prod ./build",
-    "postdeploy": "now alias -A ./build/now.json"
+    "predeploy": "REACT_APP_API_ENDPOINT=https://desolate-reaches-66266.herokuapp.com/api npm run build",
+    "deploy": "now --prod ./build"
   },
   "eslintConfig": {
     "extends": "react-app"
