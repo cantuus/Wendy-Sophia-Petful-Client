@@ -10,19 +10,22 @@ import "./CatAdoptionPage.css";
 class CatAdoptionPage extends Component {
   static defaultProps = {
     history: {
-      push: () => {}
+      push: () => { }
     }
   };
 
   static contextType = PetContext;
 
   state = {
-    adoptionComplete: false
+    adoptionComplete: false,
+    choseCat: false,
   };
 
   handleAdoption() {
-    this.setState({ adoptionComplete: true });
-    this.props.history.push("/summary");
+    this.setState({
+      adoptionComplete: true,
+      choseCat: !this.state.choseCat,
+    });
   }
   renderWaitlistMessage() {
     const { catAdopter, catWaitlist } = this.context;
@@ -33,17 +36,17 @@ class CatAdoptionPage extends Component {
             {catWaitlist[0]}, meet your new cat!
           </div>
         ) : (
-          <div>
-            This cat is waiting for a new home. Join the waitlist to adopt this
-            next cat!
+            <div>
+              This cat is waiting for a new home. Join the waitlist to adopt this
+              next cat!
           </div>
-        )}
+          )}
 
         {catAdopter === catWaitlist[0] ? (
           <p>Click the Adopt Me button below to complete the adoption</p>
         ) : (
-          ""
-        )}
+            ""
+          )}
       </h3>
     );
   }
@@ -53,12 +56,14 @@ class CatAdoptionPage extends Component {
     return (
       <>
         {catAdopter === catWaitlist[0] ? (
-          <button type="button" onClick={() => this.handleAdoption()}>
-            Adopt Me!
+          <Link to="/summary/" chosecat={this.state.choseCat}>
+            <button type="button" onClick={() => this.handleAdoption()}>
+              Adopt Me!
           </button>
+          </Link>
         ) : (
-          ""
-        )}
+            ""
+          )}
       </>
     );
   }

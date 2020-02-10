@@ -4,16 +4,21 @@ const PetContext = React.createContext({
   catWaitlist: [],
   dogWaitlist: [],
   cat: {},
-  nextCat: {},
-  catAdopter: "",
   dog: {},
-  setCatPerson: () => {},
-  setCat: () => {},
-  setDog: () => {},
-  setError: () => {},
-  setCatWaitlist: () => {},
-  setDogWaitlist: () => {},
-  clearError: () => {}
+  nextCat: {},
+  nextDog: {},
+  catAdopter: "",
+  dogAdopter: "",
+  setCatPerson: () => { },
+  setDogPerson: () => { },
+  resetCatPerson: () => { },
+  resetDogPerson: () => { },
+  setCat: () => { },
+  setDog: () => { },
+  setError: () => { },
+  setCatWaitlist: () => { },
+  setDogWaitlist: () => { },
+  clearError: () => { }
 });
 
 export default PetContext;
@@ -21,11 +26,13 @@ export default PetContext;
 export class PetProvider extends Component {
   state = {
     catWaitlist: ["Wendy", "Sophia", "Maggie", "Krystle", "Christina"],
-    dogWaitlist: ["Andrea", "Joe", "Rich", "Tauhida"],
+    dogWaitlist: ["Andrea", "Joe", "Rich", "Tauhida", "Emma"],
     cat: {},
-    nextCat: {},
-    catAdopter: "",
     dog: {},
+    nextCat: {},
+    nextDog: {},
+    catAdopter: "",
+    dogAdopter: "",
     yourTurn: false,
     current: {
       person: "",
@@ -37,8 +44,20 @@ export class PetProvider extends Component {
     this.setState({ catAdopter });
   };
 
+  resetCatPerson = () => {
+    this.setState({ catAdopter: "" })
+  }
+
   setCatWaitlist = person => {
     this.setState({ catWaitlist: [...this.state.catWaitlist, person] });
+  };
+
+  resetDogPerson = () => {
+    this.setState({ dogAdopter: "" })
+  }
+
+  setDogPerson = dogAdopter => {
+    this.setState({ dogAdopter });
   };
 
   setDogWaitlist = person => {
@@ -49,6 +68,10 @@ export class PetProvider extends Component {
     this.setState({ cat });
   };
 
+  setDog = dog => {
+    this.setState({ dog });
+  };
+
   setAllCats = resData => {
     this.setState({
       error: null,
@@ -56,8 +79,11 @@ export class PetProvider extends Component {
     });
   };
 
-  setDog = dog => {
-    this.setState({ dog });
+  setAllDogs = resData => {
+    this.setState({
+      error: null,
+      nextDog: { ...resData }
+    });
   };
 
   setError = error => {
@@ -73,14 +99,20 @@ export class PetProvider extends Component {
       catWaitlist: this.state.catWaitlist,
       dogWaitlist: this.state.dogWaitlist,
       cat: this.state.cat,
-      nextCat: this.state.nextCat,
-      catAdopter: this.state.catAdopter,
       dog: this.state.dog,
+      nextCat: this.state.nextCat,
+      nextDog: this.state.nextDog,
+      catAdopter: this.state.catAdopter,
+      dogAdopter: this.state.dogAdopter,
       currentPerson: this.state.currentPerson,
+      resetCatPerson: this.resetCatPerson,
+      resetDogPerson: this.resetDogPerson,
       setCat: this.setCat,
-      setAllCats: this.setAllCats,
-      setCatPerson: this.setCatPerson,
       setDog: this.setDog,
+      setAllCats: this.setAllCats,
+      setAllDogs: this.setAllDogs,
+      setCatPerson: this.setCatPerson,
+      setDogPerson: this.setDogPerson,
       setCatWaitlist: this.setCatWaitlist,
       setDogWaitlist: this.setDogWaitlist,
       setError: this.setError,

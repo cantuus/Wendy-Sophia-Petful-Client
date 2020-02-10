@@ -1,46 +1,48 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PetApiService from "../services/pet-api-services";
 import PetContext from "../context/PetContext";
 
 class DogAdoption extends Component {
   static contextType = PetContext;
 
-  // componentDidMount() {
-  //   this.context.clearError();
-  //   PetApiService.getDogs()
-  //     .then(this.context.setDog)
-  //     .catch(this.context.setError);
-  //   console.log(this.context);
-  // }
+  updateDog = () => {
+    const { dogWaitlist } = this.context;
 
-  // componentWillUnmount() {
-  //   PetApiService.getDogs();
-  // }
+    dogWaitlist.shift();
 
-  adoptDog() {
-    console.log("pet adopted");
-    PetApiService.deleteDog().then(PetApiService.getDogs());
+    PetApiService.getDogs()
+      .then(response => {
+        this.context.setDog(response.dog);
+      })
+      .then(dog => {
+        PetApiService.deleteDog().then(() => {
+          if (dogWaitlist.length > 1) {
+            setTimeout(() => {
+              this.updateDog();
+            }, 2000);
+          }
+        });
+      })
+      .catch({
+        error: "an error came up"
+      });
+  };
+
+  componentDidMount() {
+    PetApiService.reloadDogs().then(() => {
+      this.updateDog();
+    });
   }
 
-  enableAdoptButton() {
-    return (
-      <>
-        {/* disabled={!this.state.current.touched && !this.state.yourTurn} */}
-        <button type="button" onClick={this.adoptDog}>
-          Adopt Me!
-        </button>
-      </>
-    );
-  }
   render() {
     const { dog } = this.props;
+
     return (
-      <section className="pet-info">
-        <img
-          className="pet-picture"
-          src={dog.imageUrl}
-          alt={`picture of ${dog.name}`}
-        />
+      <section className="dog-item">
+        <Link to="/request">
+          <img className="dog-picture" src={dog.imageUrl} alt={dog.name} />
+        </Link>
         <ul>
           <li>Description: {dog.imageDescription}</li>
           <li>Sex: {dog.sex}</li>
@@ -49,7 +51,6 @@ class DogAdoption extends Component {
           <li>Story: {dog.story}</li>
           <li>Date Admitted: {dog.date_admitted}</li>
         </ul>
-        {this.enableAdoptButton()}
       </section>
     );
   }

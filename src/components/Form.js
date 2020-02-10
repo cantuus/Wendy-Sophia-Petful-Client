@@ -25,10 +25,10 @@ export default class Form extends Component {
 
   handleSubmitDog = e => {
     e.preventDefault();
-    const { setDogWaitlist } = this.context;
+    const { setDogWaitlist, setDogPerson } = this.context;
     const { dogName } = e.target;
     setDogWaitlist(dogName.value);
-
+    setDogPerson(dogName.value);
     dogName.value = "";
   };
 
@@ -60,8 +60,10 @@ export default class Form extends Component {
             className="add-name-input"
             name="dogName"
             id="Form_name"
+            onChange={e => this.setState({ dogAdopter: e.target.value })}
           />
           <button type="submit">Join waiting list</button>
+          
           <Link to="/dog-adoptions">
             <button>See available dogs!</button>
           </Link>

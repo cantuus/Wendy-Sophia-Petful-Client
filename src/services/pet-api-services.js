@@ -35,11 +35,6 @@ const PetApiService = {
       !res.ok ? res.json().then(e => Promise.reject(e)) : res.json()
     );
   },
-  displayDogs() {
-    return fetch(`${config.API_ENDPOINT}/dogs`).then(res =>
-      !res.ok ? res.json().then(e => Promise.reject(e)) : res.json()
-    );
-  },
   deleteDog() {
     return fetch(`${config.API_ENDPOINT}/dogs`, {
       method: "DELETE",
@@ -53,7 +48,18 @@ const PetApiService = {
         return res.json().then(event => Promise.reject(event));
       }
     });
-  }
+  },
+  displayDogs() {
+    return fetch(`${config.API_ENDPOINT}/dogs/alldogs`).then(res =>
+      !res.ok ? res.json().then(e => Promise.reject(e)) : res.json()
+    );
+  },
+  reloadDogs() {
+    return fetch(`${config.API_ENDPOINT}/dogs/moredogs`).then(res =>
+      !res.ok ? res.json().then(e => Promise.reject(e)) : res.json()
+    );
+  },
+
 };
 
 export default PetApiService;

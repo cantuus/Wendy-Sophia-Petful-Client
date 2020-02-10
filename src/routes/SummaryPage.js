@@ -1,12 +1,32 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PetContext from "../context/PetContext";
 
 class SummaryPage extends Component {
   static contextType = PetContext;
 
-  render() {
-    const { catAdopter, cat } = this.context;
+  renderDogSummary() {
+    const { dogAdopter, dog, resetDogPerson } = this.context;
+    return (
+      <>
+        <img src={dog.imageUrl} />
+        <h3>Congratulations {dogAdopter}!</h3>
+        <p>
+          You have just adopted {dog.name}, a {dog.age} year old {dog.sex}{" "}
+          {dog.breed}!
+        </p>
+        <p>
+          We will contact you in the next 24 hours for further adoption details.
+        </p>
+        <Link to="/">
+          <button onClick={() => resetDogPerson()}>Go back to home page</button>
+        </Link>
+      </>
+    );
+  }
+
+  renderCatSummary() {
+    const { catAdopter, cat, resetCatPerson } = this.context;
     return (
       <>
         <img src={cat.imageUrl} />
@@ -19,10 +39,20 @@ class SummaryPage extends Component {
           We will contact you in the next 24 hours for further adoption details.
         </p>
         <Link to="/">
-          <button>Go back to home page</button>
+          <button onClick={() => resetCatPerson()}>Go back to home page</button>
         </Link>
       </>
-    );
+    )
+  }
+
+  render() {
+    const { catAdopter, dogAdopter } = this.context;
+    return (
+      <>
+        {catAdopter && this.renderCatSummary()}
+        {dogAdopter && this.renderDogSummary()}
+      </>
+    )
   }
 }
 
