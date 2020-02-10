@@ -8,6 +8,11 @@
   animation: switch 5s linear infinite;
 }
 
+button {
+  padding: 10px;
+  font-weight: 500;
+}
+
 @keyframes switch {
   0% {
     z-index: 1;

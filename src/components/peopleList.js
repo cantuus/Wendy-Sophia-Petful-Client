@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./PeopleList.css";
+import "./peopleList.css";
 
 class PeopleList extends Component {
   // .then(dog => {

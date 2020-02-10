@@ -48,7 +48,7 @@ export default class Form extends Component {
           <button type="submit">Join waiting list</button>
 
           <Link to="/cat-adoptions">
-            <button>See available cats!</button>
+            <button className="Form__view-pets">See available cats!</button>
           </Link>
         </form>
 
@@ -63,9 +63,9 @@ export default class Form extends Component {
             onChange={e => this.setState({ dogAdopter: e.target.value })}
           />
           <button type="submit">Join waiting list</button>
-          
+
           <Link to="/dog-adoptions">
-            <button>See available dogs!</button>
+            <button className="Form__view-pets">See available dogs!</button>
           </Link>
         </form>
       </div>

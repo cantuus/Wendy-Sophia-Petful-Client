@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PetContext from "../context/PetContext";
 
 class SummaryPage extends Component {
@@ -9,7 +9,7 @@ class SummaryPage extends Component {
     const { dogAdopter, dog, resetDogPerson } = this.context;
     return (
       <>
-        <img src={dog.imageUrl} />
+        <img src={dog.imageUrl} alt={dog.name} />
         <h3>Congratulations {dogAdopter}!</h3>
         <p>
           You have just adopted {dog.name}, a {dog.age} year old {dog.sex}{" "}
@@ -29,7 +29,7 @@ class SummaryPage extends Component {
     const { catAdopter, cat, resetCatPerson } = this.context;
     return (
       <>
-        <img src={cat.imageUrl} />
+        <img src={cat.imageUrl} alt={cat.name} />
         <h3>Congratulations {catAdopter}!</h3>
         <p>
           You have just adopted {cat.name}, a {cat.age} year old {cat.sex}{" "}
@@ -42,7 +42,7 @@ class SummaryPage extends Component {
           <button onClick={() => resetCatPerson()}>Go back to home page</button>
         </Link>
       </>
-    )
+    );
   }
 
   render() {
@@ -52,7 +52,7 @@ class SummaryPage extends Component {
         {catAdopter && this.renderCatSummary()}
         {dogAdopter && this.renderDogSummary()}
       </>
-    )
+    );
   }
 }
 
